@@ -1,0 +1,827 @@
+2020-05-28,18:55:11 [DEBUG] (base_handler.py:base_handler:121): Processing POST request '{'data': {'_arg1': {'url': ['prep_string_type']}}, 'script': 'import pandas as pd\ndef get_output_schema():\n\treturn \'61b92254-a955-4ec5-9c70-461ebb662d5c\'\ndef prep_string():\n\treturn [\'prep_string_type\']\ndef prep_bool():\n\treturn [\'prep_bool_type\']\ndef prep_int():\n\treturn [\'prep_int_type\']\ndef prep_decimal():\n    return [\'prep_decimal_type\']\ndef prep_date():\n\treturn [\'prep_date_type\']\ndef prep_datetime():\n\treturn [\'prep_datetime_type\']\nimport requests\nimport pandas as pd\nimport json\nimport datetime\n\nkeys_csv = \'\'\nfirst_row_json = \'\'\n\ndef set_first_row(input):\n    global first_row_json # Needed to modify global copy of globvar\n    first_row_json = input\n\ndef get_first_row():\n    global first_row_json\n    return first_row_json\n\ndef set_globvar(input):\n    global keys_json  # Needed to modify global copy of globvar\n    global first_row_json\n    print(input)\n    if input == "Init":\n        keys_json = input\n    else:\n        keys_json = input.keys()\n    first_row_json = input\n\n\ndef get_globvar():\n    global keys_json\n    return keys_json\n\ndef get_query_json(url):\n    url = f\'{url.iloc[0]["url"]}\'\n    response = requests.get(url)\n    response = json.loads(response.text)\n    set_globvar(response[0])\n    #set_first_row(response["referrals"][0])\n    data = list()\n    for item in response:\n        data.append(item)\n    # set_globvar(next(iter).decode(\'utf-8\').split(\';\'))\n    # print(pd.DataFrame(data, columns=get_globvar()))\n    #print(pd.DataFrame(data, columns=get_globvar()))\n    return pd.DataFrame(data, columns=get_globvar())\n\ndef get_output_schema():\n    print("INIT")\n    if not "keys_json" in globals():\n        set_globvar("Init")\n\n    keys_json = get_globvar()\n    #keys = [\'INGR_CHANNELS.ATTR_NAME\', \'CALC_DPS.UNIT_RTG\', \'CALC_DPS.UNIT_RTGPCT\', \'CALC_DPS.UNIT_SHR\']\n    first_row_json = get_first_row()\n    dict = {}\n\n    if keys_json == \'Init\':\n        for i in keys_json:\n            dict[i] = prep_string()\n    else:\n        for i in keys_json:\n            print(first_row_json[i])\n            print(type(first_row_json[i]))\n\n            if i == "from":\n                dict[i] = prep_datetime()\n            elif i == "to":\n                dict[i] = prep_datetime()\n            elif i == "published":\n                dict[i] = prep_datetime()\n\n            elif isinstance(first_row_json[i], int):\n                dict[i] = prep_int()\n            elif isinstance(first_row_json[i], float):\n                dict[i] = prep_decimal()\n            else:\n                dict[i] = prep_string()\n\n    return pd.DataFrame(dict)\ndef get_output_schema_969ea95e26c44ec782bbe4e9fc44bb89(df = pd.DataFrame()):\n    import inspect\n    if len(inspect.getfullargspec(get_output_schema).args) == 0:\n        return get_output_schema()\n    else:\n        return get_output_schema(df)\nresult_schema_output = get_output_schema_969ea95e26c44ec782bbe4e9fc44bb89(pd.DataFrame(_arg1))\nreturn result_schema_output.to_dict(orient=\'split\') if isinstance(result_schema_output, pd.DataFrame) else result_schema_output'}'...
+2020-05-28,18:55:12 [INFO] (base_handler.py:base_handler:121): function to evaluate=def _user_script(tabpy, _arg1):
+ import pandas as pd
+ def get_output_schema():
+ 	return '61b92254-a955-4ec5-9c70-461ebb662d5c'
+ def prep_string():
+ 	return ['prep_string_type']
+ def prep_bool():
+ 	return ['prep_bool_type']
+ def prep_int():
+ 	return ['prep_int_type']
+ def prep_decimal():
+     return ['prep_decimal_type']
+ def prep_date():
+ 	return ['prep_date_type']
+ def prep_datetime():
+ 	return ['prep_datetime_type']
+ import requests
+ import pandas as pd
+ import json
+ import datetime
+ 
+ keys_csv = ''
+ first_row_json = ''
+ 
+ def set_first_row(input):
+     global first_row_json # Needed to modify global copy of globvar
+     first_row_json = input
+ 
+ def get_first_row():
+     global first_row_json
+     return first_row_json
+ 
+ def set_globvar(input):
+     global keys_json  # Needed to modify global copy of globvar
+     global first_row_json
+     print(input)
+     if input == "Init":
+         keys_json = input
+     else:
+         keys_json = input.keys()
+     first_row_json = input
+ 
+ 
+ def get_globvar():
+     global keys_json
+     return keys_json
+ 
+ def get_query_json(url):
+     url = f'{url.iloc[0]["url"]}'
+     response = requests.get(url)
+     response = json.loads(response.text)
+     set_globvar(response[0])
+     #set_first_row(response["referrals"][0])
+     data = list()
+     for item in response:
+         data.append(item)
+     # set_globvar(next(iter).decode('utf-8').split(';'))
+     # print(pd.DataFrame(data, columns=get_globvar()))
+     #print(pd.DataFrame(data, columns=get_globvar()))
+     return pd.DataFrame(data, columns=get_globvar())
+ 
+ def get_output_schema():
+     print("INIT")
+     if not "keys_json" in globals():
+         set_globvar("Init")
+ 
+     keys_json = get_globvar()
+     #keys = ['INGR_CHANNELS.ATTR_NAME', 'CALC_DPS.UNIT_RTG', 'CALC_DPS.UNIT_RTGPCT', 'CALC_DPS.UNIT_SHR']
+     first_row_json = get_first_row()
+     dict = {}
+ 
+     if keys_json == 'Init':
+         for i in keys_json:
+             dict[i] = prep_string()
+     else:
+         for i in keys_json:
+             print(first_row_json[i])
+             print(type(first_row_json[i]))
+ 
+             if i == "from":
+                 dict[i] = prep_datetime()
+             elif i == "to":
+                 dict[i] = prep_datetime()
+             elif i == "published":
+                 dict[i] = prep_datetime()
+ 
+             elif isinstance(first_row_json[i], int):
+                 dict[i] = prep_int()
+             elif isinstance(first_row_json[i], float):
+                 dict[i] = prep_decimal()
+             else:
+                 dict[i] = prep_string()
+ 
+     return pd.DataFrame(dict)
+ def get_output_schema_969ea95e26c44ec782bbe4e9fc44bb89(df = pd.DataFrame()):
+     import inspect
+     if len(inspect.getfullargspec(get_output_schema).args) == 0:
+         return get_output_schema()
+     else:
+         return get_output_schema(df)
+ result_schema_output = get_output_schema_969ea95e26c44ec782bbe4e9fc44bb89(pd.DataFrame(_arg1))
+ return result_schema_output.to_dict(orient='split') if isinstance(result_schema_output, pd.DataFrame) else result_schema_output
+
+2020-05-28,18:55:12 [INFO] (web.py:web:2250): 200 POST /evaluate (127.0.0.1) 27.90ms
+2020-05-28,18:55:12 [DEBUG] (base_handler.py:base_handler:121): Checking if need to handle authentication
+2020-05-28,18:55:12 [DEBUG] (base_handler.py:base_handler:121): Handling authentication
+2020-05-28,18:55:12 [INFO] (base_handler.py:base_handler:121): Authentication is not a required feature for API "v1"
+2020-05-28,18:55:12 [DEBUG] (state.py:state:492): Collecting Access-Control-Allow-Origin from state file ...
+2020-05-28,18:55:12 [DEBUG] (state.py:state:596): Loading option 'Access-Control-Allow-Origin' from section [Service Info]...
+2020-05-28,18:55:12 [DEBUG] (state.py:state:616): Returning value ''
+2020-05-28,18:55:12 [DEBUG] (state.py:state:596): Loading option 'Access-Control-Allow-Headers' from section [Service Info]...
+2020-05-28,18:55:12 [DEBUG] (state.py:state:616): Returning value ''
+2020-05-28,18:55:12 [DEBUG] (state.py:state:596): Loading option 'Access-Control-Allow-Methods' from section [Service Info]...
+2020-05-28,18:55:12 [DEBUG] (state.py:state:616): Returning value ''
+2020-05-28,18:55:12 [DEBUG] (base_handler.py:base_handler:121): Processing POST request '{'data': {'_arg1': {'url': ['prep_string_type']}}, 'script': 'import pandas as pd\ndef get_output_schema():\n\treturn \'61b92254-a955-4ec5-9c70-461ebb662d5c\'\ndef prep_string():\n\treturn [\'prep_string_type\']\ndef prep_bool():\n\treturn [\'prep_bool_type\']\ndef prep_int():\n\treturn [\'prep_int_type\']\ndef prep_decimal():\n    return [\'prep_decimal_type\']\ndef prep_date():\n\treturn [\'prep_date_type\']\ndef prep_datetime():\n\treturn [\'prep_datetime_type\']\nimport requests\nimport pandas as pd\nimport json\nimport datetime\n\nkeys_csv = \'\'\nfirst_row_json = \'\'\n\ndef set_first_row(input):\n    global first_row_json # Needed to modify global copy of globvar\n    first_row_json = input\n\ndef get_first_row():\n    global first_row_json\n    return first_row_json\n\ndef set_globvar(input):\n    global keys_json  # Needed to modify global copy of globvar\n    global first_row_json\n    print(input)\n    if input == "Init":\n        keys_json = input\n    else:\n        keys_json = input.keys()\n    first_row_json = input\n\n\ndef get_globvar():\n    global keys_json\n    return keys_json\n\ndef get_query_json(url):\n    url = f\'{url.iloc[0]["url"]}\'\n    response = requests.get(url)\n    response = json.loads(response.text)\n    set_globvar(response[0])\n    #set_first_row(response["referrals"][0])\n    data = list()\n    for item in response:\n        data.append(item)\n    # set_globvar(next(iter).decode(\'utf-8\').split(\';\'))\n    # print(pd.DataFrame(data, columns=get_globvar()))\n    #print(pd.DataFrame(data, columns=get_globvar()))\n    return pd.DataFrame(data, columns=get_globvar())\n\ndef get_output_schema():\n    print("INIT")\n    if not "keys_json" in globals():\n        set_globvar("Init")\n\n    keys_json = get_globvar()\n    #keys = [\'INGR_CHANNELS.ATTR_NAME\', \'CALC_DPS.UNIT_RTG\', \'CALC_DPS.UNIT_RTGPCT\', \'CALC_DPS.UNIT_SHR\']\n    first_row_json = get_first_row()\n    dict = {}\n\n    if keys_json == \'Init\':\n        for i in keys_json:\n            dict[i] = prep_string()\n    else:\n        for i in keys_json:\n            print(first_row_json[i])\n            print(type(first_row_json[i]))\n\n            if i == "from":\n                dict[i] = prep_datetime()\n            elif i == "to":\n                dict[i] = prep_datetime()\n            elif i == "published":\n                dict[i] = prep_datetime()\n\n            elif isinstance(first_row_json[i], int):\n                dict[i] = prep_int()\n            elif isinstance(first_row_json[i], float):\n                dict[i] = prep_decimal()\n            else:\n                dict[i] = prep_string()\n\n    return pd.DataFrame(dict)\ndef get_output_schema_969ea95e26c44ec782bbe4e9fc44bb89(df = pd.DataFrame()):\n    import inspect\n    if len(inspect.getfullargspec(get_output_schema).args) == 0:\n        return get_output_schema()\n    else:\n        return get_output_schema(df)\nresult_schema_output = get_output_schema_969ea95e26c44ec782bbe4e9fc44bb89(pd.DataFrame(_arg1))\nreturn result_schema_output.to_dict(orient=\'split\') if isinstance(result_schema_output, pd.DataFrame) else result_schema_output'}'...
+2020-05-28,18:55:12 [INFO] (base_handler.py:base_handler:121): function to evaluate=def _user_script(tabpy, _arg1):
+ import pandas as pd
+ def get_output_schema():
+ 	return '61b92254-a955-4ec5-9c70-461ebb662d5c'
+ def prep_string():
+ 	return ['prep_string_type']
+ def prep_bool():
+ 	return ['prep_bool_type']
+ def prep_int():
+ 	return ['prep_int_type']
+ def prep_decimal():
+     return ['prep_decimal_type']
+ def prep_date():
+ 	return ['prep_date_type']
+ def prep_datetime():
+ 	return ['prep_datetime_type']
+ import requests
+ import pandas as pd
+ import json
+ import datetime
+ 
+ keys_csv = ''
+ first_row_json = ''
+ 
+ def set_first_row(input):
+     global first_row_json # Needed to modify global copy of globvar
+     first_row_json = input
+ 
+ def get_first_row():
+     global first_row_json
+     return first_row_json
+ 
+ def set_globvar(input):
+     global keys_json  # Needed to modify global copy of globvar
+     global first_row_json
+     print(input)
+     if input == "Init":
+         keys_json = input
+     else:
+         keys_json = input.keys()
+     first_row_json = input
+ 
+ 
+ def get_globvar():
+     global keys_json
+     return keys_json
+ 
+ def get_query_json(url):
+     url = f'{url.iloc[0]["url"]}'
+     response = requests.get(url)
+     response = json.loads(response.text)
+     set_globvar(response[0])
+     #set_first_row(response["referrals"][0])
+     data = list()
+     for item in response:
+         data.append(item)
+     # set_globvar(next(iter).decode('utf-8').split(';'))
+     # print(pd.DataFrame(data, columns=get_globvar()))
+     #print(pd.DataFrame(data, columns=get_globvar()))
+     return pd.DataFrame(data, columns=get_globvar())
+ 
+ def get_output_schema():
+     print("INIT")
+     if not "keys_json" in globals():
+         set_globvar("Init")
+ 
+     keys_json = get_globvar()
+     #keys = ['INGR_CHANNELS.ATTR_NAME', 'CALC_DPS.UNIT_RTG', 'CALC_DPS.UNIT_RTGPCT', 'CALC_DPS.UNIT_SHR']
+     first_row_json = get_first_row()
+     dict = {}
+ 
+     if keys_json == 'Init':
+         for i in keys_json:
+             dict[i] = prep_string()
+     else:
+         for i in keys_json:
+             print(first_row_json[i])
+             print(type(first_row_json[i]))
+ 
+             if i == "from":
+                 dict[i] = prep_datetime()
+             elif i == "to":
+                 dict[i] = prep_datetime()
+             elif i == "published":
+                 dict[i] = prep_datetime()
+ 
+             elif isinstance(first_row_json[i], int):
+                 dict[i] = prep_int()
+             elif isinstance(first_row_json[i], float):
+                 dict[i] = prep_decimal()
+             else:
+                 dict[i] = prep_string()
+ 
+     return pd.DataFrame(dict)
+ def get_output_schema_969ea95e26c44ec782bbe4e9fc44bb89(df = pd.DataFrame()):
+     import inspect
+     if len(inspect.getfullargspec(get_output_schema).args) == 0:
+         return get_output_schema()
+     else:
+         return get_output_schema(df)
+ result_schema_output = get_output_schema_969ea95e26c44ec782bbe4e9fc44bb89(pd.DataFrame(_arg1))
+ return result_schema_output.to_dict(orient='split') if isinstance(result_schema_output, pd.DataFrame) else result_schema_output
+
+2020-05-28,18:55:12 [INFO] (web.py:web:2250): 200 POST /evaluate (127.0.0.1) 22.74ms
+2020-05-28,18:55:15 [DEBUG] (base_handler.py:base_handler:121): Checking if need to handle authentication
+2020-05-28,18:55:15 [DEBUG] (base_handler.py:base_handler:121): Handling authentication
+2020-05-28,18:55:15 [INFO] (base_handler.py:base_handler:121): Authentication is not a required feature for API "v1"
+2020-05-28,18:55:15 [DEBUG] (state.py:state:492): Collecting Access-Control-Allow-Origin from state file ...
+2020-05-28,18:55:15 [DEBUG] (state.py:state:596): Loading option 'Access-Control-Allow-Origin' from section [Service Info]...
+2020-05-28,18:55:15 [DEBUG] (state.py:state:616): Returning value ''
+2020-05-28,18:55:15 [DEBUG] (state.py:state:596): Loading option 'Access-Control-Allow-Headers' from section [Service Info]...
+2020-05-28,18:55:15 [DEBUG] (state.py:state:616): Returning value ''
+2020-05-28,18:55:15 [DEBUG] (state.py:state:596): Loading option 'Access-Control-Allow-Methods' from section [Service Info]...
+2020-05-28,18:55:15 [DEBUG] (state.py:state:616): Returning value ''
+2020-05-28,18:55:15 [DEBUG] (base_handler.py:base_handler:121): Processing POST request '{'data': {'_arg1': {'url': ['prep_string_type']}}, 'script': 'import pandas as pd\ndef get_output_schema():\n\treturn \'61b92254-a955-4ec5-9c70-461ebb662d5c\'\ndef prep_string():\n\treturn [\'prep_string_type\']\ndef prep_bool():\n\treturn [\'prep_bool_type\']\ndef prep_int():\n\treturn [\'prep_int_type\']\ndef prep_decimal():\n    return [\'prep_decimal_type\']\ndef prep_date():\n\treturn [\'prep_date_type\']\ndef prep_datetime():\n\treturn [\'prep_datetime_type\']\nimport requests\nimport pandas as pd\nimport json\nimport datetime\n\nkeys_csv = \'\'\nfirst_row_json = \'\'\n\ndef set_first_row(input):\n    global first_row_json # Needed to modify global copy of globvar\n    first_row_json = input\n\ndef get_first_row():\n    global first_row_json\n    return first_row_json\n\ndef set_globvar(input):\n    global keys_json  # Needed to modify global copy of globvar\n    global first_row_json\n    print(input)\n    if input == "Init":\n        keys_json = input\n    else:\n        keys_json = input.keys()\n    first_row_json = input\n\n\ndef get_globvar():\n    global keys_json\n    return keys_json\n\ndef get_query_json(url):\n    url = f\'{url.iloc[0]["url"]}\'\n    response = requests.get(url)\n    response = json.loads(response.text)\n    set_globvar(response[0])\n    #set_first_row(response["referrals"][0])\n    data = list()\n    for item in response:\n        data.append(item)\n    # set_globvar(next(iter).decode(\'utf-8\').split(\';\'))\n    # print(pd.DataFrame(data, columns=get_globvar()))\n    #print(pd.DataFrame(data, columns=get_globvar()))\n    return pd.DataFrame(data, columns=get_globvar())\n\ndef get_output_schema():\n    print("INIT")\n    if not "keys_json" in globals():\n        set_globvar("Init")\n\n    keys_json = get_globvar()\n    #keys = [\'INGR_CHANNELS.ATTR_NAME\', \'CALC_DPS.UNIT_RTG\', \'CALC_DPS.UNIT_RTGPCT\', \'CALC_DPS.UNIT_SHR\']\n    first_row_json = get_first_row()\n    dict = {}\n\n    if keys_json == \'Init\':\n        for i in keys_json:\n            dict[i] = prep_string()\n    else:\n        for i in keys_json:\n            print(first_row_json[i])\n            print(type(first_row_json[i]))\n\n            if i == "from":\n                dict[i] = prep_datetime()\n            elif i == "to":\n                dict[i] = prep_datetime()\n            elif i == "published":\n                dict[i] = prep_datetime()\n\n            elif isinstance(first_row_json[i], int):\n                dict[i] = prep_int()\n            elif isinstance(first_row_json[i], float):\n                dict[i] = prep_decimal()\n            else:\n                dict[i] = prep_string()\n\n    return pd.DataFrame(dict)\ndef get_output_schema_969ea95e26c44ec782bbe4e9fc44bb89(df = pd.DataFrame()):\n    import inspect\n    if len(inspect.getfullargspec(get_output_schema).args) == 0:\n        return get_output_schema()\n    else:\n        return get_output_schema(df)\nresult_schema_output = get_output_schema_969ea95e26c44ec782bbe4e9fc44bb89(pd.DataFrame(_arg1))\nreturn result_schema_output.to_dict(orient=\'split\') if isinstance(result_schema_output, pd.DataFrame) else result_schema_output'}'...
+2020-05-28,18:55:15 [INFO] (base_handler.py:base_handler:121): function to evaluate=def _user_script(tabpy, _arg1):
+ import pandas as pd
+ def get_output_schema():
+ 	return '61b92254-a955-4ec5-9c70-461ebb662d5c'
+ def prep_string():
+ 	return ['prep_string_type']
+ def prep_bool():
+ 	return ['prep_bool_type']
+ def prep_int():
+ 	return ['prep_int_type']
+ def prep_decimal():
+     return ['prep_decimal_type']
+ def prep_date():
+ 	return ['prep_date_type']
+ def prep_datetime():
+ 	return ['prep_datetime_type']
+ import requests
+ import pandas as pd
+ import json
+ import datetime
+ 
+ keys_csv = ''
+ first_row_json = ''
+ 
+ def set_first_row(input):
+     global first_row_json # Needed to modify global copy of globvar
+     first_row_json = input
+ 
+ def get_first_row():
+     global first_row_json
+     return first_row_json
+ 
+ def set_globvar(input):
+     global keys_json  # Needed to modify global copy of globvar
+     global first_row_json
+     print(input)
+     if input == "Init":
+         keys_json = input
+     else:
+         keys_json = input.keys()
+     first_row_json = input
+ 
+ 
+ def get_globvar():
+     global keys_json
+     return keys_json
+ 
+ def get_query_json(url):
+     url = f'{url.iloc[0]["url"]}'
+     response = requests.get(url)
+     response = json.loads(response.text)
+     set_globvar(response[0])
+     #set_first_row(response["referrals"][0])
+     data = list()
+     for item in response:
+         data.append(item)
+     # set_globvar(next(iter).decode('utf-8').split(';'))
+     # print(pd.DataFrame(data, columns=get_globvar()))
+     #print(pd.DataFrame(data, columns=get_globvar()))
+     return pd.DataFrame(data, columns=get_globvar())
+ 
+ def get_output_schema():
+     print("INIT")
+     if not "keys_json" in globals():
+         set_globvar("Init")
+ 
+     keys_json = get_globvar()
+     #keys = ['INGR_CHANNELS.ATTR_NAME', 'CALC_DPS.UNIT_RTG', 'CALC_DPS.UNIT_RTGPCT', 'CALC_DPS.UNIT_SHR']
+     first_row_json = get_first_row()
+     dict = {}
+ 
+     if keys_json == 'Init':
+         for i in keys_json:
+             dict[i] = prep_string()
+     else:
+         for i in keys_json:
+             print(first_row_json[i])
+             print(type(first_row_json[i]))
+ 
+             if i == "from":
+                 dict[i] = prep_datetime()
+             elif i == "to":
+                 dict[i] = prep_datetime()
+             elif i == "published":
+                 dict[i] = prep_datetime()
+ 
+             elif isinstance(first_row_json[i], int):
+                 dict[i] = prep_int()
+             elif isinstance(first_row_json[i], float):
+                 dict[i] = prep_decimal()
+             else:
+                 dict[i] = prep_string()
+ 
+     return pd.DataFrame(dict)
+ def get_output_schema_969ea95e26c44ec782bbe4e9fc44bb89(df = pd.DataFrame()):
+     import inspect
+     if len(inspect.getfullargspec(get_output_schema).args) == 0:
+         return get_output_schema()
+     else:
+         return get_output_schema(df)
+ result_schema_output = get_output_schema_969ea95e26c44ec782bbe4e9fc44bb89(pd.DataFrame(_arg1))
+ return result_schema_output.to_dict(orient='split') if isinstance(result_schema_output, pd.DataFrame) else result_schema_output
+
+2020-05-28,18:55:15 [INFO] (web.py:web:2250): 200 POST /evaluate (127.0.0.1) 23.69ms
+2020-05-28,18:55:15 [DEBUG] (base_handler.py:base_handler:121): Checking if need to handle authentication
+2020-05-28,18:55:15 [DEBUG] (base_handler.py:base_handler:121): Handling authentication
+2020-05-28,18:55:15 [INFO] (base_handler.py:base_handler:121): Authentication is not a required feature for API "v1"
+2020-05-28,18:55:15 [DEBUG] (state.py:state:492): Collecting Access-Control-Allow-Origin from state file ...
+2020-05-28,18:55:15 [DEBUG] (state.py:state:596): Loading option 'Access-Control-Allow-Origin' from section [Service Info]...
+2020-05-28,18:55:15 [DEBUG] (state.py:state:616): Returning value ''
+2020-05-28,18:55:15 [DEBUG] (state.py:state:596): Loading option 'Access-Control-Allow-Headers' from section [Service Info]...
+2020-05-28,18:55:15 [DEBUG] (state.py:state:616): Returning value ''
+2020-05-28,18:55:15 [DEBUG] (state.py:state:596): Loading option 'Access-Control-Allow-Methods' from section [Service Info]...
+2020-05-28,18:55:15 [DEBUG] (state.py:state:616): Returning value ''
+2020-05-28,18:55:15 [DEBUG] (base_handler.py:base_handler:121): Processing POST request '{'data': {'_arg1': {'url': ['prep_string_type']}}, 'script': 'import pandas as pd\ndef get_output_schema():\n\treturn \'61b92254-a955-4ec5-9c70-461ebb662d5c\'\ndef prep_string():\n\treturn [\'prep_string_type\']\ndef prep_bool():\n\treturn [\'prep_bool_type\']\ndef prep_int():\n\treturn [\'prep_int_type\']\ndef prep_decimal():\n    return [\'prep_decimal_type\']\ndef prep_date():\n\treturn [\'prep_date_type\']\ndef prep_datetime():\n\treturn [\'prep_datetime_type\']\nimport requests\nimport pandas as pd\nimport json\nimport datetime\n\nkeys_csv = \'\'\nfirst_row_json = \'\'\n\ndef set_first_row(input):\n    global first_row_json # Needed to modify global copy of globvar\n    first_row_json = input\n\ndef get_first_row():\n    global first_row_json\n    return first_row_json\n\ndef set_globvar(input):\n    global keys_json  # Needed to modify global copy of globvar\n    global first_row_json\n    print(input)\n    if input == "Init":\n        keys_json = input\n    else:\n        keys_json = input.keys()\n    first_row_json = input\n\n\ndef get_globvar():\n    global keys_json\n    return keys_json\n\ndef get_query_json(url):\n    url = f\'{url.iloc[0]["url"]}\'\n    response = requests.get(url)\n    response = json.loads(response.text)\n    set_globvar(response[0])\n    #set_first_row(response["referrals"][0])\n    data = list()\n    for item in response:\n        data.append(item)\n    # set_globvar(next(iter).decode(\'utf-8\').split(\';\'))\n    # print(pd.DataFrame(data, columns=get_globvar()))\n    #print(pd.DataFrame(data, columns=get_globvar()))\n    return pd.DataFrame(data, columns=get_globvar())\n\ndef get_output_schema():\n    print("INIT")\n    if not "keys_json" in globals():\n        set_globvar("Init")\n\n    keys_json = get_globvar()\n    #keys = [\'INGR_CHANNELS.ATTR_NAME\', \'CALC_DPS.UNIT_RTG\', \'CALC_DPS.UNIT_RTGPCT\', \'CALC_DPS.UNIT_SHR\']\n    first_row_json = get_first_row()\n    dict = {}\n\n    if keys_json == \'Init\':\n        for i in keys_json:\n            dict[i] = prep_string()\n    else:\n        for i in keys_json:\n            print(first_row_json[i])\n            print(type(first_row_json[i]))\n\n            if i == "from":\n                dict[i] = prep_datetime()\n            elif i == "to":\n                dict[i] = prep_datetime()\n            elif i == "published":\n                dict[i] = prep_datetime()\n\n            elif isinstance(first_row_json[i], int):\n                dict[i] = prep_int()\n            elif isinstance(first_row_json[i], float):\n                dict[i] = prep_decimal()\n            else:\n                dict[i] = prep_string()\n\n    return pd.DataFrame(dict)\ndef get_output_schema_969ea95e26c44ec782bbe4e9fc44bb89(df = pd.DataFrame()):\n    import inspect\n    if len(inspect.getfullargspec(get_output_schema).args) == 0:\n        return get_output_schema()\n    else:\n        return get_output_schema(df)\nresult_schema_output = get_output_schema_969ea95e26c44ec782bbe4e9fc44bb89(pd.DataFrame(_arg1))\nreturn result_schema_output.to_dict(orient=\'split\') if isinstance(result_schema_output, pd.DataFrame) else result_schema_output'}'...
+2020-05-28,18:55:15 [INFO] (base_handler.py:base_handler:121): function to evaluate=def _user_script(tabpy, _arg1):
+ import pandas as pd
+ def get_output_schema():
+ 	return '61b92254-a955-4ec5-9c70-461ebb662d5c'
+ def prep_string():
+ 	return ['prep_string_type']
+ def prep_bool():
+ 	return ['prep_bool_type']
+ def prep_int():
+ 	return ['prep_int_type']
+ def prep_decimal():
+     return ['prep_decimal_type']
+ def prep_date():
+ 	return ['prep_date_type']
+ def prep_datetime():
+ 	return ['prep_datetime_type']
+ import requests
+ import pandas as pd
+ import json
+ import datetime
+ 
+ keys_csv = ''
+ first_row_json = ''
+ 
+ def set_first_row(input):
+     global first_row_json # Needed to modify global copy of globvar
+     first_row_json = input
+ 
+ def get_first_row():
+     global first_row_json
+     return first_row_json
+ 
+ def set_globvar(input):
+     global keys_json  # Needed to modify global copy of globvar
+     global first_row_json
+     print(input)
+     if input == "Init":
+         keys_json = input
+     else:
+         keys_json = input.keys()
+     first_row_json = input
+ 
+ 
+ def get_globvar():
+     global keys_json
+     return keys_json
+ 
+ def get_query_json(url):
+     url = f'{url.iloc[0]["url"]}'
+     response = requests.get(url)
+     response = json.loads(response.text)
+     set_globvar(response[0])
+     #set_first_row(response["referrals"][0])
+     data = list()
+     for item in response:
+         data.append(item)
+     # set_globvar(next(iter).decode('utf-8').split(';'))
+     # print(pd.DataFrame(data, columns=get_globvar()))
+     #print(pd.DataFrame(data, columns=get_globvar()))
+     return pd.DataFrame(data, columns=get_globvar())
+ 
+ def get_output_schema():
+     print("INIT")
+     if not "keys_json" in globals():
+         set_globvar("Init")
+ 
+     keys_json = get_globvar()
+     #keys = ['INGR_CHANNELS.ATTR_NAME', 'CALC_DPS.UNIT_RTG', 'CALC_DPS.UNIT_RTGPCT', 'CALC_DPS.UNIT_SHR']
+     first_row_json = get_first_row()
+     dict = {}
+ 
+     if keys_json == 'Init':
+         for i in keys_json:
+             dict[i] = prep_string()
+     else:
+         for i in keys_json:
+             print(first_row_json[i])
+             print(type(first_row_json[i]))
+ 
+             if i == "from":
+                 dict[i] = prep_datetime()
+             elif i == "to":
+                 dict[i] = prep_datetime()
+             elif i == "published":
+                 dict[i] = prep_datetime()
+ 
+             elif isinstance(first_row_json[i], int):
+                 dict[i] = prep_int()
+             elif isinstance(first_row_json[i], float):
+                 dict[i] = prep_decimal()
+             else:
+                 dict[i] = prep_string()
+ 
+     return pd.DataFrame(dict)
+ def get_output_schema_969ea95e26c44ec782bbe4e9fc44bb89(df = pd.DataFrame()):
+     import inspect
+     if len(inspect.getfullargspec(get_output_schema).args) == 0:
+         return get_output_schema()
+     else:
+         return get_output_schema(df)
+ result_schema_output = get_output_schema_969ea95e26c44ec782bbe4e9fc44bb89(pd.DataFrame(_arg1))
+ return result_schema_output.to_dict(orient='split') if isinstance(result_schema_output, pd.DataFrame) else result_schema_output
+
+2020-05-28,18:55:15 [INFO] (web.py:web:2250): 200 POST /evaluate (127.0.0.1) 23.17ms
+2020-05-28,18:56:12 [DEBUG] (base_handler.py:base_handler:121): Checking if need to handle authentication
+2020-05-28,18:56:12 [DEBUG] (base_handler.py:base_handler:121): Handling authentication
+2020-05-28,18:56:12 [INFO] (base_handler.py:base_handler:121): Authentication is not a required feature for API "v1"
+2020-05-28,18:56:12 [DEBUG] (state.py:state:492): Collecting Access-Control-Allow-Origin from state file ...
+2020-05-28,18:56:12 [DEBUG] (state.py:state:596): Loading option 'Access-Control-Allow-Origin' from section [Service Info]...
+2020-05-28,18:56:12 [DEBUG] (state.py:state:616): Returning value ''
+2020-05-28,18:56:12 [DEBUG] (state.py:state:596): Loading option 'Access-Control-Allow-Headers' from section [Service Info]...
+2020-05-28,18:56:12 [DEBUG] (state.py:state:616): Returning value ''
+2020-05-28,18:56:12 [DEBUG] (state.py:state:596): Loading option 'Access-Control-Allow-Methods' from section [Service Info]...
+2020-05-28,18:56:12 [DEBUG] (state.py:state:616): Returning value ''
+2020-05-28,18:56:12 [DEBUG] (base_handler.py:base_handler:121): Processing POST request '{'data': {'_arg1': {'url': ['prep_string_type']}}, 'script': 'import pandas as pd\ndef get_output_schema():\n\treturn \'61b92254-a955-4ec5-9c70-461ebb662d5c\'\ndef prep_string():\n\treturn [\'prep_string_type\']\ndef prep_bool():\n\treturn [\'prep_bool_type\']\ndef prep_int():\n\treturn [\'prep_int_type\']\ndef prep_decimal():\n    return [\'prep_decimal_type\']\ndef prep_date():\n\treturn [\'prep_date_type\']\ndef prep_datetime():\n\treturn [\'prep_datetime_type\']\nimport requests\nimport pandas as pd\nimport json\nimport datetime\n\nkeys_csv = \'\'\nfirst_row_json = \'\'\n\ndef set_first_row(input):\n    global first_row_json # Needed to modify global copy of globvar\n    first_row_json = input\n\ndef get_first_row():\n    global first_row_json\n    return first_row_json\n\ndef set_globvar(input):\n    global keys_json  # Needed to modify global copy of globvar\n    global first_row_json\n    print(input)\n    if input == "Init":\n        keys_json = input\n    else:\n        keys_json = input.keys()\n    first_row_json = input\n\n\ndef get_globvar():\n    global keys_json\n    return keys_json\n\ndef get_query_json(url):\n    url = f\'{url.iloc[0]["url"]}\'\n    response = requests.get(url)\n    response = json.loads(response.text)\n    set_globvar(response[0])\n    #set_first_row(response["referrals"][0])\n    data = list()\n    for item in response:\n        data.append(item)\n    # set_globvar(next(iter).decode(\'utf-8\').split(\';\'))\n    # print(pd.DataFrame(data, columns=get_globvar()))\n    #print(pd.DataFrame(data, columns=get_globvar()))\n    return pd.DataFrame(data, columns=get_globvar())\n\ndef get_output_schema():\n    print("INIT")\n    if not "keys_json" in globals():\n        set_globvar("Init")\n\n    keys_json = get_globvar()\n    #keys = [\'INGR_CHANNELS.ATTR_NAME\', \'CALC_DPS.UNIT_RTG\', \'CALC_DPS.UNIT_RTGPCT\', \'CALC_DPS.UNIT_SHR\']\n    first_row_json = get_first_row()\n    dict = {}\n\n    if keys_json == \'Init\':\n        for i in keys_json:\n            dict[i] = prep_string()\n    else:\n        for i in keys_json:\n            if i == "from":\n                dict[i] = prep_datetime()\n            elif i == "to":\n                dict[i] = prep_datetime()\n            elif i == "published":\n                dict[i] = prep_datetime()\n\n            elif isinstance(first_row_json[i], int):\n                dict[i] = prep_int()\n            elif isinstance(first_row_json[i], float):\n                dict[i] = prep_decimal()\n            else:\n                dict[i] = prep_string()\n\n    return pd.DataFrame(dict)\ndef get_output_schema_969ea95e26c44ec782bbe4e9fc44bb89(df = pd.DataFrame()):\n    import inspect\n    if len(inspect.getfullargspec(get_output_schema).args) == 0:\n        return get_output_schema()\n    else:\n        return get_output_schema(df)\nresult_schema_output = get_output_schema_969ea95e26c44ec782bbe4e9fc44bb89(pd.DataFrame(_arg1))\nreturn result_schema_output.to_dict(orient=\'split\') if isinstance(result_schema_output, pd.DataFrame) else result_schema_output'}'...
+2020-05-28,18:56:12 [INFO] (base_handler.py:base_handler:121): function to evaluate=def _user_script(tabpy, _arg1):
+ import pandas as pd
+ def get_output_schema():
+ 	return '61b92254-a955-4ec5-9c70-461ebb662d5c'
+ def prep_string():
+ 	return ['prep_string_type']
+ def prep_bool():
+ 	return ['prep_bool_type']
+ def prep_int():
+ 	return ['prep_int_type']
+ def prep_decimal():
+     return ['prep_decimal_type']
+ def prep_date():
+ 	return ['prep_date_type']
+ def prep_datetime():
+ 	return ['prep_datetime_type']
+ import requests
+ import pandas as pd
+ import json
+ import datetime
+ 
+ keys_csv = ''
+ first_row_json = ''
+ 
+ def set_first_row(input):
+     global first_row_json # Needed to modify global copy of globvar
+     first_row_json = input
+ 
+ def get_first_row():
+     global first_row_json
+     return first_row_json
+ 
+ def set_globvar(input):
+     global keys_json  # Needed to modify global copy of globvar
+     global first_row_json
+     print(input)
+     if input == "Init":
+         keys_json = input
+     else:
+         keys_json = input.keys()
+     first_row_json = input
+ 
+ 
+ def get_globvar():
+     global keys_json
+     return keys_json
+ 
+ def get_query_json(url):
+     url = f'{url.iloc[0]["url"]}'
+     response = requests.get(url)
+     response = json.loads(response.text)
+     set_globvar(response[0])
+     #set_first_row(response["referrals"][0])
+     data = list()
+     for item in response:
+         data.append(item)
+     # set_globvar(next(iter).decode('utf-8').split(';'))
+     # print(pd.DataFrame(data, columns=get_globvar()))
+     #print(pd.DataFrame(data, columns=get_globvar()))
+     return pd.DataFrame(data, columns=get_globvar())
+ 
+ def get_output_schema():
+     print("INIT")
+     if not "keys_json" in globals():
+         set_globvar("Init")
+ 
+     keys_json = get_globvar()
+     #keys = ['INGR_CHANNELS.ATTR_NAME', 'CALC_DPS.UNIT_RTG', 'CALC_DPS.UNIT_RTGPCT', 'CALC_DPS.UNIT_SHR']
+     first_row_json = get_first_row()
+     dict = {}
+ 
+     if keys_json == 'Init':
+         for i in keys_json:
+             dict[i] = prep_string()
+     else:
+         for i in keys_json:
+             if i == "from":
+                 dict[i] = prep_datetime()
+             elif i == "to":
+                 dict[i] = prep_datetime()
+             elif i == "published":
+                 dict[i] = prep_datetime()
+ 
+             elif isinstance(first_row_json[i], int):
+                 dict[i] = prep_int()
+             elif isinstance(first_row_json[i], float):
+                 dict[i] = prep_decimal()
+             else:
+                 dict[i] = prep_string()
+ 
+     return pd.DataFrame(dict)
+ def get_output_schema_969ea95e26c44ec782bbe4e9fc44bb89(df = pd.DataFrame()):
+     import inspect
+     if len(inspect.getfullargspec(get_output_schema).args) == 0:
+         return get_output_schema()
+     else:
+         return get_output_schema(df)
+ result_schema_output = get_output_schema_969ea95e26c44ec782bbe4e9fc44bb89(pd.DataFrame(_arg1))
+ return result_schema_output.to_dict(orient='split') if isinstance(result_schema_output, pd.DataFrame) else result_schema_output
+
+2020-05-28,18:56:12 [INFO] (web.py:web:2250): 200 POST /evaluate (127.0.0.1) 27.62ms
+2020-05-28,18:56:12 [DEBUG] (base_handler.py:base_handler:121): Checking if need to handle authentication
+2020-05-28,18:56:12 [DEBUG] (base_handler.py:base_handler:121): Handling authentication
+2020-05-28,18:56:12 [INFO] (base_handler.py:base_handler:121): Authentication is not a required feature for API "v1"
+2020-05-28,18:56:12 [DEBUG] (state.py:state:492): Collecting Access-Control-Allow-Origin from state file ...
+2020-05-28,18:56:12 [DEBUG] (state.py:state:596): Loading option 'Access-Control-Allow-Origin' from section [Service Info]...
+2020-05-28,18:56:12 [DEBUG] (state.py:state:616): Returning value ''
+2020-05-28,18:56:12 [DEBUG] (state.py:state:596): Loading option 'Access-Control-Allow-Headers' from section [Service Info]...
+2020-05-28,18:56:12 [DEBUG] (state.py:state:616): Returning value ''
+2020-05-28,18:56:12 [DEBUG] (state.py:state:596): Loading option 'Access-Control-Allow-Methods' from section [Service Info]...
+2020-05-28,18:56:12 [DEBUG] (state.py:state:616): Returning value ''
+2020-05-28,18:56:12 [DEBUG] (base_handler.py:base_handler:121): Processing POST request '{'data': {'_arg1': {'url': ['prep_string_type']}}, 'script': 'import pandas as pd\ndef get_output_schema():\n\treturn \'61b92254-a955-4ec5-9c70-461ebb662d5c\'\ndef prep_string():\n\treturn [\'prep_string_type\']\ndef prep_bool():\n\treturn [\'prep_bool_type\']\ndef prep_int():\n\treturn [\'prep_int_type\']\ndef prep_decimal():\n    return [\'prep_decimal_type\']\ndef prep_date():\n\treturn [\'prep_date_type\']\ndef prep_datetime():\n\treturn [\'prep_datetime_type\']\nimport requests\nimport pandas as pd\nimport json\nimport datetime\n\nkeys_csv = \'\'\nfirst_row_json = \'\'\n\ndef set_first_row(input):\n    global first_row_json # Needed to modify global copy of globvar\n    first_row_json = input\n\ndef get_first_row():\n    global first_row_json\n    return first_row_json\n\ndef set_globvar(input):\n    global keys_json  # Needed to modify global copy of globvar\n    global first_row_json\n    print(input)\n    if input == "Init":\n        keys_json = input\n    else:\n        keys_json = input.keys()\n    first_row_json = input\n\n\ndef get_globvar():\n    global keys_json\n    return keys_json\n\ndef get_query_json(url):\n    url = f\'{url.iloc[0]["url"]}\'\n    response = requests.get(url)\n    response = json.loads(response.text)\n    set_globvar(response[0])\n    #set_first_row(response["referrals"][0])\n    data = list()\n    for item in response:\n        data.append(item)\n    # set_globvar(next(iter).decode(\'utf-8\').split(\';\'))\n    # print(pd.DataFrame(data, columns=get_globvar()))\n    #print(pd.DataFrame(data, columns=get_globvar()))\n    return pd.DataFrame(data, columns=get_globvar())\n\ndef get_output_schema():\n    print("INIT")\n    if not "keys_json" in globals():\n        set_globvar("Init")\n\n    keys_json = get_globvar()\n    #keys = [\'INGR_CHANNELS.ATTR_NAME\', \'CALC_DPS.UNIT_RTG\', \'CALC_DPS.UNIT_RTGPCT\', \'CALC_DPS.UNIT_SHR\']\n    first_row_json = get_first_row()\n    dict = {}\n\n    if keys_json == \'Init\':\n        for i in keys_json:\n            dict[i] = prep_string()\n    else:\n        for i in keys_json:\n            if i == "from":\n                dict[i] = prep_datetime()\n            elif i == "to":\n                dict[i] = prep_datetime()\n            elif i == "published":\n                dict[i] = prep_datetime()\n\n            elif isinstance(first_row_json[i], int):\n                dict[i] = prep_int()\n            elif isinstance(first_row_json[i], float):\n                dict[i] = prep_decimal()\n            else:\n                dict[i] = prep_string()\n\n    return pd.DataFrame(dict)\ndef get_output_schema_969ea95e26c44ec782bbe4e9fc44bb89(df = pd.DataFrame()):\n    import inspect\n    if len(inspect.getfullargspec(get_output_schema).args) == 0:\n        return get_output_schema()\n    else:\n        return get_output_schema(df)\nresult_schema_output = get_output_schema_969ea95e26c44ec782bbe4e9fc44bb89(pd.DataFrame(_arg1))\nreturn result_schema_output.to_dict(orient=\'split\') if isinstance(result_schema_output, pd.DataFrame) else result_schema_output'}'...
+2020-05-28,18:56:12 [INFO] (base_handler.py:base_handler:121): function to evaluate=def _user_script(tabpy, _arg1):
+ import pandas as pd
+ def get_output_schema():
+ 	return '61b92254-a955-4ec5-9c70-461ebb662d5c'
+ def prep_string():
+ 	return ['prep_string_type']
+ def prep_bool():
+ 	return ['prep_bool_type']
+ def prep_int():
+ 	return ['prep_int_type']
+ def prep_decimal():
+     return ['prep_decimal_type']
+ def prep_date():
+ 	return ['prep_date_type']
+ def prep_datetime():
+ 	return ['prep_datetime_type']
+ import requests
+ import pandas as pd
+ import json
+ import datetime
+ 
+ keys_csv = ''
+ first_row_json = ''
+ 
+ def set_first_row(input):
+     global first_row_json # Needed to modify global copy of globvar
+     first_row_json = input
+ 
+ def get_first_row():
+     global first_row_json
+     return first_row_json
+ 
+ def set_globvar(input):
+     global keys_json  # Needed to modify global copy of globvar
+     global first_row_json
+     print(input)
+     if input == "Init":
+         keys_json = input
+     else:
+         keys_json = input.keys()
+     first_row_json = input
+ 
+ 
+ def get_globvar():
+     global keys_json
+     return keys_json
+ 
+ def get_query_json(url):
+     url = f'{url.iloc[0]["url"]}'
+     response = requests.get(url)
+     response = json.loads(response.text)
+     set_globvar(response[0])
+     #set_first_row(response["referrals"][0])
+     data = list()
+     for item in response:
+         data.append(item)
+     # set_globvar(next(iter).decode('utf-8').split(';'))
+     # print(pd.DataFrame(data, columns=get_globvar()))
+     #print(pd.DataFrame(data, columns=get_globvar()))
+     return pd.DataFrame(data, columns=get_globvar())
+ 
+ def get_output_schema():
+     print("INIT")
+     if not "keys_json" in globals():
+         set_globvar("Init")
+ 
+     keys_json = get_globvar()
+     #keys = ['INGR_CHANNELS.ATTR_NAME', 'CALC_DPS.UNIT_RTG', 'CALC_DPS.UNIT_RTGPCT', 'CALC_DPS.UNIT_SHR']
+     first_row_json = get_first_row()
+     dict = {}
+ 
+     if keys_json == 'Init':
+         for i in keys_json:
+             dict[i] = prep_string()
+     else:
+         for i in keys_json:
+             if i == "from":
+                 dict[i] = prep_datetime()
+             elif i == "to":
+                 dict[i] = prep_datetime()
+             elif i == "published":
+                 dict[i] = prep_datetime()
+ 
+             elif isinstance(first_row_json[i], int):
+                 dict[i] = prep_int()
+             elif isinstance(first_row_json[i], float):
+                 dict[i] = prep_decimal()
+             else:
+                 dict[i] = prep_string()
+ 
+     return pd.DataFrame(dict)
+ def get_output_schema_969ea95e26c44ec782bbe4e9fc44bb89(df = pd.DataFrame()):
+     import inspect
+     if len(inspect.getfullargspec(get_output_schema).args) == 0:
+         return get_output_schema()
+     else:
+         return get_output_schema(df)
+ result_schema_output = get_output_schema_969ea95e26c44ec782bbe4e9fc44bb89(pd.DataFrame(_arg1))
+ return result_schema_output.to_dict(orient='split') if isinstance(result_schema_output, pd.DataFrame) else result_schema_output
+
+2020-05-28,18:56:12 [INFO] (web.py:web:2250): 200 POST /evaluate (127.0.0.1) 12.91ms
+2020-05-28,18:56:12 [DEBUG] (base_handler.py:base_handler:121): Checking if need to handle authentication
+2020-05-28,18:56:12 [DEBUG] (base_handler.py:base_handler:121): Handling authentication
+2020-05-28,18:56:12 [INFO] (base_handler.py:base_handler:121): Authentication is not a required feature for API "v1"
+2020-05-28,18:56:12 [DEBUG] (state.py:state:492): Collecting Access-Control-Allow-Origin from state file ...
+2020-05-28,18:56:12 [DEBUG] (state.py:state:596): Loading option 'Access-Control-Allow-Origin' from section [Service Info]...
+2020-05-28,18:56:12 [DEBUG] (state.py:state:616): Returning value ''
+2020-05-28,18:56:12 [DEBUG] (state.py:state:596): Loading option 'Access-Control-Allow-Headers' from section [Service Info]...
+2020-05-28,18:56:12 [DEBUG] (state.py:state:616): Returning value ''
+2020-05-28,18:56:12 [DEBUG] (state.py:state:596): Loading option 'Access-Control-Allow-Methods' from section [Service Info]...
+2020-05-28,18:56:12 [DEBUG] (state.py:state:616): Returning value ''
+2020-05-28,18:56:12 [DEBUG] (base_handler.py:base_handler:121): Processing POST request '{'data': {'_arg1': {'url': ['https://datahub-api-varnish.intern-we.drift.azure.nrk.cloud/v1/service/sorted-list?id=nrkno&from=2020-01-01T22%3A00%3A00Z&to=2020-05-19T22%3A00%3A00Z&sort=asc&limit=100']}}, 'script': 'import pandas as pd\nimport requests\nimport pandas as pd\nimport json\nimport datetime\n\nkeys_csv = \'\'\nfirst_row_json = \'\'\n\ndef set_first_row(input):\n    global first_row_json # Needed to modify global copy of globvar\n    first_row_json = input\n\ndef get_first_row():\n    global first_row_json\n    return first_row_json\n\ndef set_globvar(input):\n    global keys_json  # Needed to modify global copy of globvar\n    global first_row_json\n    print(input)\n    if input == "Init":\n        keys_json = input\n    else:\n        keys_json = input.keys()\n    first_row_json = input\n\n\ndef get_globvar():\n    global keys_json\n    return keys_json\n\ndef get_query_json(url):\n    url = f\'{url.iloc[0]["url"]}\'\n    response = requests.get(url)\n    response = json.loads(response.text)\n    set_globvar(response[0])\n    #set_first_row(response["referrals"][0])\n    data = list()\n    for item in response:\n        data.append(item)\n    # set_globvar(next(iter).decode(\'utf-8\').split(\';\'))\n    # print(pd.DataFrame(data, columns=get_globvar()))\n    #print(pd.DataFrame(data, columns=get_globvar()))\n    return pd.DataFrame(data, columns=get_globvar())\n\ndef get_output_schema():\n    print("INIT")\n    if not "keys_json" in globals():\n        set_globvar("Init")\n\n    keys_json = get_globvar()\n    #keys = [\'INGR_CHANNELS.ATTR_NAME\', \'CALC_DPS.UNIT_RTG\', \'CALC_DPS.UNIT_RTGPCT\', \'CALC_DPS.UNIT_SHR\']\n    first_row_json = get_first_row()\n    dict = {}\n\n    if keys_json == \'Init\':\n        for i in keys_json:\n            dict[i] = prep_string()\n    else:\n        for i in keys_json:\n            if i == "from":\n                dict[i] = prep_datetime()\n            elif i == "to":\n                dict[i] = prep_datetime()\n            elif i == "published":\n                dict[i] = prep_datetime()\n\n            elif isinstance(first_row_json[i], int):\n                dict[i] = prep_int()\n            elif isinstance(first_row_json[i], float):\n                dict[i] = prep_decimal()\n            else:\n                dict[i] = prep_string()\n\n    return pd.DataFrame(dict)\nexecution_result = get_query_json(pd.DataFrame(_arg1))\nreturn execution_result.to_dict(orient=\'list\') if isinstance(execution_result, pd.DataFrame) else execution_result\n'}'...
+2020-05-28,18:56:12 [INFO] (base_handler.py:base_handler:121): function to evaluate=def _user_script(tabpy, _arg1):
+ import pandas as pd
+ import requests
+ import pandas as pd
+ import json
+ import datetime
+ 
+ keys_csv = ''
+ first_row_json = ''
+ 
+ def set_first_row(input):
+     global first_row_json # Needed to modify global copy of globvar
+     first_row_json = input
+ 
+ def get_first_row():
+     global first_row_json
+     return first_row_json
+ 
+ def set_globvar(input):
+     global keys_json  # Needed to modify global copy of globvar
+     global first_row_json
+     print(input)
+     if input == "Init":
+         keys_json = input
+     else:
+         keys_json = input.keys()
+     first_row_json = input
+ 
+ 
+ def get_globvar():
+     global keys_json
+     return keys_json
+ 
+ def get_query_json(url):
+     url = f'{url.iloc[0]["url"]}'
+     response = requests.get(url)
+     response = json.loads(response.text)
+     set_globvar(response[0])
+     #set_first_row(response["referrals"][0])
+     data = list()
+     for item in response:
+         data.append(item)
+     # set_globvar(next(iter).decode('utf-8').split(';'))
+     # print(pd.DataFrame(data, columns=get_globvar()))
+     #print(pd.DataFrame(data, columns=get_globvar()))
+     return pd.DataFrame(data, columns=get_globvar())
+ 
+ def get_output_schema():
+     print("INIT")
+     if not "keys_json" in globals():
+         set_globvar("Init")
+ 
+     keys_json = get_globvar()
+     #keys = ['INGR_CHANNELS.ATTR_NAME', 'CALC_DPS.UNIT_RTG', 'CALC_DPS.UNIT_RTGPCT', 'CALC_DPS.UNIT_SHR']
+     first_row_json = get_first_row()
+     dict = {}
+ 
+     if keys_json == 'Init':
+         for i in keys_json:
+             dict[i] = prep_string()
+     else:
+         for i in keys_json:
+             if i == "from":
+                 dict[i] = prep_datetime()
+             elif i == "to":
+                 dict[i] = prep_datetime()
+             elif i == "published":
+                 dict[i] = prep_datetime()
+ 
+             elif isinstance(first_row_json[i], int):
+                 dict[i] = prep_int()
+             elif isinstance(first_row_json[i], float):
+                 dict[i] = prep_decimal()
+             else:
+                 dict[i] = prep_string()
+ 
+     return pd.DataFrame(dict)
+ execution_result = get_query_json(pd.DataFrame(_arg1))
+ return execution_result.to_dict(orient='list') if isinstance(execution_result, pd.DataFrame) else execution_result
+
+2020-05-28,18:56:12 [DEBUG] (connectionpool.py:connectionpool:941): Starting new HTTPS connection (1): datahub-api-varnish.intern-we.drift.azure.nrk.cloud:443
+2020-05-28,18:56:12 [DEBUG] (connectionpool.py:connectionpool:442): https://datahub-api-varnish.intern-we.drift.azure.nrk.cloud:443 "GET /v1/service/sorted-list?id=nrkno&from=2020-01-01T22%3A00%3A00Z&to=2020-05-19T22%3A00%3A00Z&sort=asc&limit=100 HTTP/1.1" 200 None
+2020-05-28,18:56:12 [INFO] (web.py:web:2250): 200 POST /evaluate (127.0.0.1) 215.71ms
+2020-05-28,19:26:54 [CRITICAL] (app.py:app:118): Exiting on signal 2...
+2020-05-28,19:26:54 [INFO] (app.py:app:124): Shutting down TabPy...
+2020-05-28,19:26:54 [INFO] (app.py:app:124): Shutting down TabPy...
+2020-06-15,19:41:48 [DEBUG] (app.py:app:211): Parameter port set to "9004" from default value
+2020-06-15,19:41:48 [DEBUG] (app.py:app:211): Parameter server_version set to "1.0.0" from default value
+2020-06-15,19:41:48 [DEBUG] (app.py:app:211): Parameter evaluate_timeout set to "30" from default value
+2020-06-15,19:41:48 [DEBUG] (app.py:app:211): Parameter upload_dir set to "/Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/tabpy/tmp/query_objects" from default value
+2020-06-15,19:41:48 [DEBUG] (app.py:app:211): Parameter transfer_protocol set to "http" from default value
+2020-06-15,19:41:48 [DEBUG] (app.py:app:217): Parameter certificate_file is not set
+2020-06-15,19:41:48 [DEBUG] (app.py:app:217): Parameter key_file is not set
+2020-06-15,19:41:48 [DEBUG] (app.py:app:211): Parameter state_file_path set to "/Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/tabpy/tabpy_server" from default value
+2020-06-15,19:41:48 [DEBUG] (app.py:app:211): Parameter static_path set to "/Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/tabpy/tabpy_server/static" from default value
+2020-06-15,19:41:48 [DEBUG] (app.py:app:217): Parameter TABPY_PWD_FILE is not set
+2020-06-15,19:41:48 [DEBUG] (app.py:app:211): Parameter log_request_context set to "false" from default value
+2020-06-15,19:41:48 [DEBUG] (app.py:app:211): Parameter max_request_size_in_mb set to "100" from default value
+2020-06-15,19:41:48 [INFO] (app.py:app:441): Loading state from state file /Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/tabpy/tabpy_server/state.ini
+2020-06-15,19:41:48 [DEBUG] (app.py:app:320): Static pages folder set to "/Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/tabpy/tabpy_server/static"
+2020-06-15,19:41:48 [INFO] (app.py:app:339): Password file is not specified: Authentication is not enabled
+2020-06-15,19:41:48 [INFO] (app.py:app:353): Call context logging is disabled
+2020-06-15,19:41:48 [INFO] (app.py:app:126): Initializing TabPy...
+2020-06-15,19:41:48 [DEBUG] (selector_events.py:selector_events:58): Using selector: KqueueSelector
+2020-06-15,19:41:48 [INFO] (callbacks.py:callbacks:43): Initializing TabPy Server...
+2020-06-15,19:41:48 [DEBUG] (state.py:state:596): Loading option 'None' from section [Query Objects Service Versions]...
+2020-06-15,19:41:48 [DEBUG] (state.py:state:616): Returning value '[]'
+2020-06-15,19:41:48 [DEBUG] (state.py:state:148): Collected endpoints: {}
+2020-06-15,19:41:48 [INFO] (app.py:app:130): Done initializing TabPy.
+2020-06-15,19:41:48 [INFO] (app.py:app:84): Setting max request size to 104857600 bytes
+2020-06-15,19:41:48 [INFO] (callbacks.py:callbacks:64): Initializing models...
+2020-06-15,19:41:48 [DEBUG] (state.py:state:596): Loading option 'None' from section [Query Objects Service Versions]...
+2020-06-15,19:41:48 [DEBUG] (state.py:state:616): Returning value '[]'
+2020-06-15,19:41:48 [DEBUG] (state.py:state:148): Collected endpoints: {}
+2020-06-15,23:53:26 [DEBUG] (app.py:app:211): Parameter port set to "9004" from default value
+2020-06-15,23:53:26 [DEBUG] (app.py:app:211): Parameter server_version set to "1.0.0" from default value
+2020-06-15,23:53:26 [DEBUG] (app.py:app:211): Parameter evaluate_timeout set to "30" from default value
+2020-06-15,23:53:26 [DEBUG] (app.py:app:211): Parameter upload_dir set to "/Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/tabpy/tmp/query_objects" from default value
+2020-06-15,23:53:26 [DEBUG] (app.py:app:211): Parameter transfer_protocol set to "http" from default value
+2020-06-15,23:53:26 [DEBUG] (app.py:app:217): Parameter certificate_file is not set
+2020-06-15,23:53:26 [DEBUG] (app.py:app:217): Parameter key_file is not set
+2020-06-15,23:53:26 [DEBUG] (app.py:app:211): Parameter state_file_path set to "/Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/tabpy/tabpy_server" from default value
+2020-06-15,23:53:26 [DEBUG] (app.py:app:211): Parameter static_path set to "/Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/tabpy/tabpy_server/static" from default value
+2020-06-15,23:53:26 [DEBUG] (app.py:app:217): Parameter TABPY_PWD_FILE is not set
+2020-06-15,23:53:26 [DEBUG] (app.py:app:211): Parameter log_request_context set to "false" from default value
+2020-06-15,23:53:26 [DEBUG] (app.py:app:211): Parameter max_request_size_in_mb set to "100" from default value
+2020-06-15,23:53:26 [INFO] (app.py:app:441): Loading state from state file /Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/tabpy/tabpy_server/state.ini
+2020-06-15,23:53:26 [DEBUG] (app.py:app:320): Static pages folder set to "/Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/tabpy/tabpy_server/static"
+2020-06-15,23:53:26 [INFO] (app.py:app:339): Password file is not specified: Authentication is not enabled
+2020-06-15,23:53:26 [INFO] (app.py:app:353): Call context logging is disabled
+2020-06-15,23:53:26 [INFO] (app.py:app:126): Initializing TabPy...
+2020-06-15,23:53:26 [DEBUG] (selector_events.py:selector_events:58): Using selector: KqueueSelector
+2020-06-15,23:53:26 [INFO] (callbacks.py:callbacks:43): Initializing TabPy Server...
+2020-06-15,23:53:26 [DEBUG] (state.py:state:596): Loading option 'None' from section [Query Objects Service Versions]...
+2020-06-15,23:53:26 [DEBUG] (state.py:state:616): Returning value '[]'
+2020-06-15,23:53:26 [DEBUG] (state.py:state:148): Collected endpoints: {}
+2020-06-15,23:53:26 [INFO] (app.py:app:130): Done initializing TabPy.
+2020-06-15,23:53:26 [INFO] (app.py:app:84): Setting max request size to 104857600 bytes
+2020-06-15,23:53:26 [INFO] (callbacks.py:callbacks:64): Initializing models...
+2020-06-15,23:53:26 [DEBUG] (state.py:state:596): Loading option 'None' from section [Query Objects Service Versions]...
+2020-06-15,23:53:26 [DEBUG] (state.py:state:616): Returning value '[]'
+2020-06-15,23:53:26 [DEBUG] (state.py:state:148): Collected endpoints: {}
